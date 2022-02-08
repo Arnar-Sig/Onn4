@@ -1,0 +1,44 @@
+---
+title: "Fasteign"
+author: "Arnar Sigurðsson"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Hluti 1
+a)
+Lesum inn gögn.
+
+```{r}
+library(tidyverse)
+as <- read.table("https://notendur.hi.is/~ahj/husnaedisverd_2017_21.csv", sep = ";", header = T, encoding = "UTF-8")
+hverfi <- c(200, 220, 270)
+```
+
+b)
+Veljum þrjú hverfi til að skoða.
+
+```{r}
+hverfi <- c(200, 220, 270)
+as <- filter(as, matssvaedi%in%hverfi)
+glimpse(as)
+```
+c)
+Allar breytur virðast vera af réttri gerð.
+
+d)
+```{r}
+as <- mutate(as, fermetraverd = kaupverd/birtm2)
+as <- mutate(as, fermetraverd = as.integer(fermetraverd))
+glimpse(as)
+```
+
+e)
+```{r}
+teg_eign_ser_ib <-
+```
+
+
+
