@@ -1,10 +1,11 @@
-import timeit
 #convenience föll
 def split(word):
     return [char for char in word]
 def printBoard(theBoard):
     for x in range(len(theBoard)):
         print(' '.join(theBoard[x]))
+
+
 
 #gögn og vinnsla
 data = input().split()
@@ -17,7 +18,7 @@ boulderLoc = []; boulderLoc.append(0), boulderLoc.append(0)
 manLoc = []; manLoc.append(0); manLoc.append(0)
 foundB = 0; foundS = 0
 for x in range(boardY):
-    currentLevel = split(input())
+    currentLevel = input()
     if foundB == 0:
         if "B" in currentLevel:
             boulderLoc[1] = x
@@ -30,21 +31,16 @@ for x in range(boardY):
             foundS = 1
     board.append(currentLevel)
 
-#print("board[0][1]:", board[0][1])
-#print("board[1][0]:", board[1][0])
-#print(manLoc)
-#print(boulderLoc)
-
 # the main
 pancake = 0
 direction = 0
 falling = 1
+bouncing = 0
 
 while True:
-    #print("BoulderLocation(y,x) - direction - falling:",boulderLoc[1], boulderLoc[0], direction, falling)
+    #print("BoulderLocation(y,x) - direction - falling - bouncing:",boulderLoc[1], boulderLoc[0], direction, falling, bouncing)
     #print("Board thar sem boulder er:", board[boulderLoc[0]][boulderLoc[1]])
     #print("board[boulderLoc[0]][boulderLoc[1]+1]", board[boulderLoc[0]][boulderLoc[1]+1])
-
     boulderBoardYplus1 = board[boulderLoc[1]+1][boulderLoc[0]]
     boulderBoard = board[boulderLoc[1]][boulderLoc[0]]
 
@@ -69,24 +65,32 @@ while True:
         pancake = 0
         break
     # 5. Ef boulder á að falla í næstu umferð
-    # GALLAÐ
     elif boulderBoardYplus1 != "#":
         #print("Executing if 5")
         boulderLoc[1] = boulderLoc[1] + 1
         falling = 1
+        bouncing = 0
     # 6. Ef lendir á rampi til vinstri
-    elif boulderBoard == "/" and (falling == 1 or direction == "left"):
+    elif boulderBoard == "/" and (falling == 1 or direction == "right"):
         #print("Executing if 6")
+        if bouncing == 1:
+            pancake = 0
+            break
         direction = "left"
         boulderLoc[0] -= 1
         falling = 0
+        bouncing = 1
     # 7. Ef lendir á rampi til hægri
-    elif boulderBoard == "\\" and (falling == 1 or direction == "right"):
+    elif boulderBoard == "\\" and (falling == 1 or direction == "left"):
         #print("Executing if 7")
+        if bouncing == 1:
+            pancake = 0
+            break
         direction = "right"
         boulderLoc[0] += 1
         falling = 0
-    # 8. Ef einföld færlsa til hægri
+        bouncing = 1
+    # 8. Ef einföld færsla til hægri
     elif direction == "right":
         #print("Executing if 8")
         boulderLoc[0] += 1

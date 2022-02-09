@@ -1,9 +1,3 @@
-
-
-
-import queue
-
-
 # def kbonacci(n, k):
 #     rod = queue.Queue(k+1)
 #     for x in range(k-1):

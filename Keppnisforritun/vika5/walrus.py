@@ -1,24 +1,32 @@
 n = int(input())
 weights = [int(input()) for x in range(n)]
-geymsla = [[0]*2000]*20
-closest = 0
+#geymsla = [[0]*2050]*n
+closest = weights[0]
 
 def calc(i, j, sum):
     global closest
+    if (sum > 1000) and (abs(sum-1000) > abs(closest-1000)):
+        return 0
+    #print("i, j og sum:", i, j, sum)
+    
     if i >= j:
-        print("sum atm:", sum)
-        #if abs(sum - 1000) < abs(closest - 1000):
-            #closest = sum
-        return sum
-    if geymsla[i][sum] == 0:
-        med = calc(i+1, j, sum + weights[i])
-        an = calc(i+1, j, sum)
-        geymsla[i][sum] = min(med, an)
-    else:
-        return geymsla[i][sum]
+        #print("sum atm:", sum)
+        absSum = abs(sum - 1000)
+        absClos = abs(closest - 1000)
+        if absSum <= absClos:
+            #print("er inni")
+            if absClos == absSum:
+                closest = max(sum, closest)
+            else:
+                closest = sum
+        return 0
+    med = calc(i+1, j, sum + weights[i])
+    an = calc(i+1, j, sum)
+    return min(med, an)
+    #print("er ad returna geymsla[i][sum]=", geymsla[i][sum])
+    
 
 
-
-print(calc(0, n, 0))
+calc(0, n, 0)
 print(closest)
 #print("geymsla:", geymsla)
