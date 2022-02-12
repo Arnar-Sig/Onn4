@@ -39,7 +39,7 @@ falling = 1
 bouncing = 0
 
 while True:
-    #print("BoulderLocation(y,x) - direction - falling - bouncing:",boulderLoc[1], boulderLoc[0], direction, falling, bouncing)
+    print("BoulderLocation(y,x) - direction - falling - bouncing:",boulderLoc[1], boulderLoc[0], direction, falling, bouncing)
     #print("Board thar sem boulder er:", board[boulderLoc[0]][boulderLoc[1]])
     #print("board[boulderLoc[0]][boulderLoc[1]+1]", board[boulderLoc[0]][boulderLoc[1]+1])
     boulderBoardYplus1 = board[boulderLoc[1]+1][boulderLoc[0]] # reitur fyrir neðan Boulder
@@ -49,11 +49,6 @@ while True:
     if boulderLoc[1] == manLoc[1] and boulderLoc[0] == manLoc[0]:
         #print("Executing if 1")
         pancake = 1
-        break
-
-    # 1.a ef inni í vegg
-    if boulderBoard == "#":
-        pancake = 0
         break
     # 2. Ef rúllar til hægri og rekst á vegg eða "\ ramp"
     elif direction == "right" and (falling == 0) and (boulderBoardYplus1 == "#")  and (boulderBoard == "#" or boulderBoard == "\\"):

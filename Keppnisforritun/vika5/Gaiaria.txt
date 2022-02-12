@@ -50,11 +50,6 @@ while True:
         #print("Executing if 1")
         pancake = 1
         break
-
-    # 1.a ef inni í vegg
-    if boulderBoard == "#":
-        pancake = 0
-        break
     # 2. Ef rúllar til hægri og rekst á vegg eða "\ ramp"
     elif direction == "right" and (falling == 0) and (boulderBoardYplus1 == "#")  and (boulderBoard == "#" or boulderBoard == "\\"):
         #print("Executing if 2")

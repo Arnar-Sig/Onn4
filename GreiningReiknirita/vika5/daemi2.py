@@ -1,5 +1,3 @@
-from re import I
-
 
 def isWord(i, j):
     print("hi)")

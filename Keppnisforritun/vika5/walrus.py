@@ -1,7 +1,11 @@
+from timeit import default_timer as timer
+
 n = int(input())
 weights = [int(input()) for x in range(n)]
 #geymsla = [[0]*2050]*n
 closest = weights[0]
+
+#start = timer()
 
 def calc(i, j, sum):
     global closest
@@ -24,9 +28,8 @@ def calc(i, j, sum):
     an = calc(i+1, j, sum)
     return min(med, an)
     #print("er ad returna geymsla[i][sum]=", geymsla[i][sum])
-    
-
-
 calc(0, n, 0)
 print(closest)
 #print("geymsla:", geymsla)
+#end = timer()
+#print(end - start)
