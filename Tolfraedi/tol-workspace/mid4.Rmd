@@ -1,0 +1,87 @@
+---
+title: "midvikudagur4"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+library(tidyverse)
+
+# 1)
+```{r}
+as <- read.table("https://notendur.hi.is/ahj/pulsAll.csv", sep = ";", header = T)
+
+```
+
+# 2)
+```{r}
+glimpse(as)
+```
+
+# 3)
+```{r}
+as <- mutate(as, kyn = factor(kyn))
+as <- mutate(as, kyn = fct_recode(kyn, kvk = "1", kk = "2"))
+```
+
+# 4)
+```{r}
+as <- as %>% mutate(hreyfing = ifelse(as$likamsraekt > 0, "ja", "nei"))
+
+```
+
+
+# 5)
+```{r}
+set.seed(37) 
+urtak <-sample_n(as, 200)
+```
+
+
+
+# 6)
+```{r}
+binom.test(table(urtak$hreyfing))
+
+```
+mörk: 0.8126270 < p < 0.9119421
+
+
+# 7)
+```{r}
+binom.test(table(urtak$hreyfing))
+
+```
+
+data:  table(urtak$hreyfing)
+number of successes = 171, number of trials = 197, p-value < 2.2e-16
+alternative hypothesis: true probability of success is not equal to 0.5
+95 percent confidence interval:
+  0.8126270 0.9119421
+sample estimates:
+probability of success 
+0.8680203 
+
+h0: probability of success is 0.5
+h1: probability of success is not 0.5
+prófstærðin: 0.8680203
+p-gildi: 2.2e-16
+þar sem útkoman er 0.86 og öryggisbil er 0.81 - 0.911 getum við með 95% öryggi
+hafnað núlltilgátunni.
+
+# 8)
+```{r}
+prop.test(table(urtak$drekkur,urtak$namskeid))
+```
+data:  table(urtak$drekkur, urtak$namskeid)
+X-squared = 2.3543, df = 1, p-value = 0.1249
+alternative hypothesis: two.sided
+95 percent confidence interval:
+  -0.01477881  0.32187415
+sample estimates:
+  prop 1    prop 2 
+0.3353659 0.1818182 
+
+hér er p-gildið hærra en alpha og því samþykkjum við núll-tilgátuna

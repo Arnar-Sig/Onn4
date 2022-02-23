@@ -1,3 +1,4 @@
+from timeit import default_timer as timer
 
 def knap(capacity, length, weights, values):
     # setja upp tvívítt fylki með indexi og þyngdum
@@ -42,42 +43,42 @@ def knap(capacity, length, weights, values):
             count += 1
             indices.append((i-1))
     print(count)
-    print(*indices)
-    # strengur = ""
-    # for x in range(len(indices)):
-    #     print(indices[x], end=" ")
+    strengur = ""
+    for x in range(len(indices)):
+        print(indices[x], end=" ")
   
-    
-            
-while True:
-    data = []
-    try:
-        data = input().split()
-    except EOFError as e:
-        break
-    capacity = int(data[0])
-    n = int(data[1])
-    weights = []
-    values = []
-    geymsla = []
-    indices = []
-    count = 0
-    for x in range(n):
-        data = input().split()
+weights = []
+values = []            
+data = []
 
-    
-        values.append(int(data[0]))
-        weights.append(int(data[1]))
-    #geymsla = [[0]*(capacity+1)]*(n+1)
-    geymsla = [[0 for x in range((capacity + 1))] for y in range((n + 1))]
-    #print(n)
-    #print(geymsla)
-    #print(weights)
-    #print(values)
-   
-    knap(capacity, n, weights, values)
+input_file = open('knap2000.txt', 'r')
+start = timer()
+for x in range(2000):
+    data = input_file.readline().split()
+    values.append(int(data[0]))
+    weights.append(int(data[1]))
 
-    #print(geymsla)
+
+
+capacity = 2000
+n = 2000
+
+geymsla = []
+indices = []
+count = 0
+#geymsla = [[0]*(capacity+1)]*(n+1)
+geymsla = [[0 for x in range((capacity + 1))] for y in range((n + 1))]
+#print(n)
+#print(geymsla)
+#print(weights)
+#print(values)
+
+knap(capacity, n, weights, values)
+
+end = timer()
+print(end - start)
+
+#print(geymsla)
 
 
 # # Brute !
