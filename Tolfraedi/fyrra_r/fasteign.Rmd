@@ -12,13 +12,12 @@ a)
 Lesum inn gögn.
 
 ```{r}
-install.packages("tidyverse",dependencies = TRUE)
+library(kableExtra)
 library(tidyverse)
 library(ggplot2)
 library(dplyr)
 library(ggpubr)
 as <- read.table("https://notendur.hi.is/~ahj/husnaedisverd_2017_21.csv", sep = ";", header = T, encoding = "UTF-8")
-hverfi <- c(200, 220, 270)
 ```
 
 b)
@@ -27,7 +26,7 @@ Veljum þrjú hverfi til að skoða.
 ```{r}
 hverfi <- c(200, 220, 270)
 as <- filter(as, matssvaedi%in%hverfi)
-glimpse(as)
+#glimpse(as)
 ```
 c)
 Allar breytur virðast vera af réttri gerð.
@@ -36,13 +35,13 @@ d)
 ```{r}
 as <- mutate(as, fermetraverd = kaupverd/birtm2)
 as <- mutate(as, fermetraverd = as.integer(fermetraverd))
-glimpse(as)
+#glimpse(as)
 ```
 
 e)
 ```{r}
-teg_eign_ser_ib <- factor(c("Einbýlishús", "Íbúðareign", "Parhús", "Raðhús"))
-fct_recode(teg_eign_ser_ib, Ibud = "Íbúðareign", Serbyli = "Einbýlishús", Serbyli = "Parhús", Serbyli = "Raðhús")
+as <- mutate(as, if_else(teg_eign == "Íbúðareign", teg_eign_ser_ib <- "Íbúð", teg_eign_ser_ib <- "Sérbýli"))
+#glimpse(as)
 ```
 
 f)
@@ -54,49 +53,60 @@ hverfi <- c("Kópavogur", "Hafnarfjörður", "Mosfellsbær")
 
 g)
 ```{r}
-#ggplot(as, aes(fermetraverd)) + geom_histogram(binwidth =55, stat="count") + labs(x = "Fermetraverð", y = "Fjöldi")
 ggplot(as, aes(x=fermetraverd)) + geom_histogram(bins = 30) + labs(x = "Fermetraverð", y = "Fjöldi")
-
 ggplot(as, aes(x=birtm2)) + geom_histogram(bins = 30) + labs(x = "Birt m2", y = "Fjöldi")
-
 ```
-
 
 h)
 ```{r}
-#ggplot(as, aes(x = haed, y = thyngd)) + geom_bar(stat='identity' ) + labs(x = "Hæð", y="Þyngd") + facet_grid(~kyn)
-
-#ggplot(as, aes(x = teg_eign, y = matssvaedi)) + geom_bar(stat='identity' ) + labs(x = "Hæð", y="Þyngd")
-
-#ggplot(as, aes(x = byggar, y = matssvaedi, color = as.factor(teg_eign))) + geom_point() 
-
-ggplot(as, aes(x = byggar, y = matssvaedi, fill = teg_eign)) + geom_bar(stat='identity') + labs(x = "Byggingarár", y = "Matssvæði")
-
-
-
+nytt <- as
+nytt$matssvaedi[nytt$matssvaedi == "200"] <- "Kópavogur"
+nytt$matssvaedi[nytt$matssvaedi == "220"] <- "Hafnarfjörður"
+nytt$matssvaedi[nytt$matssvaedi == "270"] <- "Mosfellsbær"
+ggplot(nytt, aes(x = matssvaedi, fill =`if_else(...)`, na.rm = T)) + geom_bar() + labs(x = "Hverfi", y = "Fjöldi", fill = "Tegund húsnæðis")
 ```
 
 i)
 ```{r}
-ggboxplot(as, x = "matssvaedi", y = "fermetraverd",
+ggboxplot(nytt, x = "matssvaedi", y = "fermetraverd",
                  color = "darkgreen", palette = "jco") + labs(x = "Póstnúmer", y = "Fermetraverð")
 ```
 
 j)
 ```{r}
-
-p <- ggplot(as, aes(x=birtm2, fill = teg_eign, y =kaupverd)) + geom_bar(stat='identity') + xlab('Inngrip') + ylab('Fjöldi') + scale_x_discrete(labels=c("Hljóp","Sat kyrr"))
-
-
-ggplot(as, aes(x = birtm2, y = kaupverd, color = teg_eign)) +
-  geom_point() + facet_grid(as$matssvaedi) + labs(x= "Fermetrar", y= "Kaupverð")
-
-
+ggplot(as, aes(x = birtm2, y = kaupverd, color = `if_else(...)`)) +
+  geom_point() + facet_grid(as$matssvaedi) + labs(x= "Fermetrar", y= "Kaupverð", color = "Tegund húsnæðis")
 ```
 
 # Hluti 3
 
+k)
+```{r}
+table(nytt$matssvaedi, as$`if_else(...)`)
+```
 
 
+l)
+```{r}
+round(prop.table(table(nytt$matssvaedi, nytt$`if_else(...)`),margin=1)*100,1)
+```
 
+m)
+```{r}
+as %>%
+  filter(!is.na(fermetraverd)) %>%
+  group_by(Hverfi = matssvaedi, Tegund_eignar = `if_else(...)`) %>%
+  summarise(Meðaltal=mean(fermetraverd),
+            Staðalfrávik = sd(fermetraverd), Miðgildi = median(fermetraverd), Fjoldi = n())
+```
+
+# Hluti 4
+
+n)
+i. Líkurnar á að tvær eignir af fjórum séu einbýlishús eru `r dbinom(2, 4, 0.3)*100`%.
+ii. Líkurnar á að færri en tvær eignir séu einbýlishús eru `r pbinom(1, 4, 0.3)*100`%.
+
+o)
+i. Líkurnar á að eignin sé stærri en 200 fm eru `r round(100 - pnorm(200, 160, 30)*100,3)`%
+ii. Til þess að vera í hópi 5% stærstu einbýlishúsa í hverfinu þarf húsið að vera að minsta kosti `r round(qnorm(0.95, 160, 30),3)` fermetrar.
 
