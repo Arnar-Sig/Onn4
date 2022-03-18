@@ -1,0 +1,81 @@
+---
+title: "seinna"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = F, message = F)
+library(kableExtra)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+```
+
+# Hluti 1
+
+a)
+```{r}
+as <- read.table("https://notendur.hi.is/~ahj/husnaedisverd_2017_21.csv", sep = ";", header = T, encoding = "UTF-8", stringsAsFactors = T )
+```
+
+b)
+Veljum þrjú hverfi til að skoða.
+
+```{r}
+hverfi <- c(200, 220, 270)
+as <- filter(as, matssvaedi%in%hverfi)
+```
+
+c)
+```{r}
+glimpse(as)
+```
+Allt í lagi með gerðir breyta.
+
+d)
+```{r}
+as <- mutate(as, fermetraverd = kaupverd/birtm2)
+as <- mutate(as, fermetraverd = as.integer(fermetraverd))
+#glimpse(as)
+```
+
+e)
+```{r}
+as <- mutate(as, if_else(teg_eign == "Íbúðareign", teg_eign_ser_ib <- "Íbúð", teg_eign_ser_ib <- "Sérbýli"))
+#glimpse(as)
+```
+
+f)
+```{r}
+as$matssvaedi[as$matssvaedi == "200"] <- "Kópavogur"
+as$matssvaedi[as$matssvaedi == "220"] <- "Hafnarfjörður"
+as$matssvaedi[as$matssvaedi == "270"] <- "Mosfellsbær"
+```
+
+g)
+```{r}
+set.seed(37)
+urtak <- sample_n(as, 400)
+```
+
+# Hluti 2
+
+h)
+```{r}
+table(as$matssvaedi, as$`if_else(...)`)
+```
+
+i)
+```{r}
+round(prop.table(table(nytt$matssvaedi, nytt$`if_else(...)`),margin=1)*100,1)
+```
+
+j)
+```{r}
+
+```
+
+# Hluti 3
+
+k)

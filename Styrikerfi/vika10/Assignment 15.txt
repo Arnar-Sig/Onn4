@@ -1,0 +1,41 @@
+Assignment 15
+
+Init:
+    Semaphores creamBaker = new Semaphore(0)
+    Semaphores chocolateBaker = new Semaphore(0)
+    Semaphores plainbollaBaker = new Semaphore(0)
+
+Master baker:
+    while True:
+    int choice= random(1,3)
+    switch(choice){
+        case 1: 
+            offer(cream, chocolate)
+            creamBaker.release()
+        case 2: 
+            offer(cream, plainbolla)
+            chocolateBaker.release()
+        case 3: 
+            offer(plainbolla, chocolate)
+            plainbollaBaker.release()
+    }
+
+Assistant baker with cream: 
+while True:
+    creamBaker.acquire(1)
+    ingredients:=fetch()
+    assemble(ingredients, cream)
+
+Assistant baker with chocolate: 
+while True:
+    choclateBaker.acquire(1)
+    ingredients:=fetch()
+    assemble(ingredients, chocolate)
+
+Assistant baker with plainbolla:
+while True:
+    plainbollaBaker.acquire(1)
+    ingredients:=fetch()
+    assemble(ingredients, plainbolla)
+
+    

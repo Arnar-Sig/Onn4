@@ -1,0 +1,29 @@
+---
+title: "midvik5"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = F, message = F)
+library(kableExtra)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggpubr)
+```
+
+a)
+```{r}
+puls <- read.table("https://notendur.hi.is/ahj/pulsAll.csv", sep = ";", header = T)
+```
+
+b)
+```{r}
+glimpse(puls)
+```
+
+c)
+```{r}
+puls 
+```
+
