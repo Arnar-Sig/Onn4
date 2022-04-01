@@ -63,19 +63,94 @@ urtak <- sample_n(as, 400)
 
 h)
 ```{r}
-table(as$matssvaedi, as$`if_else(...)`)
+table(urtak$matssvaedi, urtak$`if_else(...)`)
 ```
 
 i)
 ```{r}
-round(prop.table(table(nytt$matssvaedi, nytt$`if_else(...)`),margin=1)*100,1)
+round(prop.table(table(urtak$matssvaedi, urtak$`if_else(...)`),margin=1)*100,1)
 ```
 
 j)
+
+H0: það er ekki samband á milli hverfa og eigna
+
+H1: það er samband á milli hverfa og eigna
+
+Sé núlltilgátan sönn fylgir prófstærðin χ2-dreifingu með (l - 1) · (d - 1) fjölda frígráða. Hafna skal núlltilgátunni sé χ2 > χ2 1−α;((l−1)·(d−1)).
+
+χ2-dreifingin: χ2 0,95, 2 = 5.991
+
 ```{r}
+chisq.test(urtak$matssvaedi, urtak$`if_else(...)`)
 
 ```
+
+og þar sem p-gildið 0.0009758 er minna en 0.05 höfnum við núllgátunni og ályktum að það sé samband á milli hverfa og gerð eigna. 
 
 # Hluti 3
 
 k)
+
+Gerum tvíhliða t-test þar sem:
+
+H0: Það er ekki munur á meðalfermetraverði eftir því hvort eignin er íbúð eða sérbýli.
+
+H1: Það er munur á meðalfermetraverði eftir því hvort eignin er íbúð eða sérbýli.
+
+
+```{r}
+t.test(urtak$fermetraverd ~ urtak$`if_else(...)`)
+```
+Eins og sést er p-gildið 8.357e-06 sem er minna en alpha=0.05 og því höfnum við H0 og ályktum að það sé munur á fermetraverði eftir því hvort eignin er íbúð eða sérbýli.
+
+l)
+
+```{r}
+urtak <- mutate(urtak, staerd140 = if_else(urtak$birtm2>140, "Stærri", "Minni"))
+```
+
+m)
+
+Gerum tvíhliða t-test þar sem:
+
+H0: Það er ekki munur á meðalfermetraverði eftir því hvort eignin er stærri en 140 eða minni/jöfn 140.
+
+H1: Það er munur á meðalfermetraverði eftir því hvort eignin stærri en 140 eða minni/jöfn 140.
+
+```{r}
+t.test(urtak$fermetraverd ~ urtak$staerd140)
+```
+Úr prófinu kemur að p-gildið er mun minna en alpha og því höfnum við H0 og getum ályktað að það sé munur á meðalfermetraverðinu
+
+
+n)
+
+```{r}
+ggplot(urtak, aes(x = matssvaedi, y = fermetraverd)) + geom_boxplot() + labs(x = "Hverfi", y = "Matssvæði")
+
+```
+
+o)
+
+```{r}
+fervik <- aov(fermetraverd ~ matssvaedi, data = urtak)
+anova(fervik)
+```
+
+
+p)
+
+```{r}
+ggplot(urtak, aes(x = birtm2, y = kaupverd)) + geom_point() + labs(x = "Fermetrar", y = "Kaupverð")
+
+```
+Eins og sést á myndinni væri mjög auðvelt að setja inn línu til að tákna sambandið á milli breytanna tveggja.
+
+
+q)
+
+```{r}
+
+```
+
