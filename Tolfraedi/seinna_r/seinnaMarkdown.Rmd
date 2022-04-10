@@ -1,5 +1,5 @@
 ---
-title: "seinna"
+title: "Seinna R-verkefni"
 output: html_document
 ---
 
@@ -37,13 +37,13 @@ d)
 ```{r}
 as <- mutate(as, fermetraverd = kaupverd/birtm2)
 as <- mutate(as, fermetraverd = as.integer(fermetraverd))
-#glimpse(as)
+glimpse(as)
 ```
 
 e)
 ```{r}
 as <- mutate(as, if_else(teg_eign == "Íbúðareign", teg_eign_ser_ib <- "Íbúð", teg_eign_ser_ib <- "Sérbýli"))
-#glimpse(as)
+glimpse(as)
 ```
 
 f)
@@ -133,11 +133,19 @@ ggplot(urtak, aes(x = matssvaedi, y = fermetraverd)) + geom_boxplot() + labs(x =
 
 o)
 
+Notum fervikagreiningu þar sem:
+
+H0: Það er enginn munur á meðaltölum
+
+H1: Það er munur á meðaltölum
+
 ```{r}
 fervik <- aov(fermetraverd ~ matssvaedi, data = urtak)
-anova(fervik)
+#anova(fervik)
+summary(fervik)
 ```
 
+Þar sem p-gildið er hærra en alpha-gildið getum við ekki hafnað núlltilgátunni. Því getum við ekki ályktað að það sé munur á meðaltölum milli hverfa.
 
 p)
 
@@ -145,12 +153,20 @@ p)
 ggplot(urtak, aes(x = birtm2, y = kaupverd)) + geom_point() + labs(x = "Fermetrar", y = "Kaupverð")
 
 ```
-Eins og sést á myndinni væri mjög auðvelt að setja inn línu til að tákna sambandið á milli breytanna tveggja.
+
+Eins og sést á myndinni væri mjög auðvelt að setja inn línu til að tákna sambandið á milli breytanna tveggja og því er viðeigandi að nota línulegt aðhvarf.
 
 
 q)
 
 ```{r}
-
+lml <- lm(kaupverd ~ birtm2, data=urtak)
+summary(lml)
+confint(lml)
 ```
+
+Skurðpunktur við y-ás skv. aðhvarfsgreiningu er 6343.510 og hallatalan 195.755. Það sem þetta segir okkur er að verðið hækkar um 195.755 við hvern fermetra sem bætt er við.
+
+
+
 
